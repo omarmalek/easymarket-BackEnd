@@ -41,7 +41,7 @@ public class MainController {
 	
 	
 	// ============================= not for use
-	// =====================================
+	
 	@GetMapping("/products")
 	public List<Product> getAllProducts() {
 		return productService.getAllProducts();
