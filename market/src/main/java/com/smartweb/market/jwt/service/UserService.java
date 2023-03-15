@@ -1,5 +1,12 @@
 package com.smartweb.market.jwt.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.smartweb.market.entity.Customer;
 import com.smartweb.market.jwt.dao.RoleDao;
 import com.smartweb.market.jwt.dao.UserDao;
@@ -7,19 +14,6 @@ import com.smartweb.market.jwt.entity.Role;
 import com.smartweb.market.jwt.entity.User;
 import com.smartweb.market.model.UserDTO;
 import com.smartweb.market.repository.CustomerRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.remoting.RemoteLookupFailureException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
 @Service
 public class UserService {
