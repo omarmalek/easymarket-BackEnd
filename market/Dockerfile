@@ -1,3 +1,4 @@
-FROM openjdk:11
-COPY target/market-0.0.1-SNAPSHOT.jar market-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java", "-jar", "/market-0.0.1-SNAPSHOT.jar"]
+FROM openjdk
+COPY ./target/easymarket-final-0.1.jar easymarket-final-0.1.jar
+ENTRYPOINT ["java","-jar","/easymarket-final-0.1.jar"]
+

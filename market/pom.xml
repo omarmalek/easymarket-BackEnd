@@ -59,6 +59,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>easymarket-final-0.1</finalName>
 	</build>
 
 </project>
