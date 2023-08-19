@@ -22,5 +22,5 @@ public interface ProductService {
 	
 
 	
-	Product saveProductWithMedia(Product product,MultipartFile[] file);
+	Product saveProductWithMedia(Product product, MultipartFile[] file);
 }

@@ -51,9 +51,10 @@ public class UserService {
         userRole.setRoleName("User");
         userRole.setRoleDescription("Default role for newly created record");
         roleDao.save(userRole);
+        //---------------------------------------------------------------------
 
         User adminUser = new User();
-        adminUser.setUserName("omar");
+        adminUser.setUserName("admin");
         adminUser.setUserPassword(getEncodedPassword("123"));
         
         Set<Role> adminRoles = new HashSet<>();
@@ -85,13 +86,13 @@ public class UserService {
       
         Set<Role> deliveryRoles = new HashSet<>();
         deliveryRoles.add(deliveryRole);
-        deliveryUser.setRole(userRoles);
+        deliveryUser.setRole(deliveryRoles);
         userDao.save(deliveryUser);
     }
 
     public User registerNewUser(UserDTO userDTO) throws Exception {
     	//we should check if username (which is phone) is already exist and throw exception as username is taken
-    	// but i'll leave it as any user can take over phone number from previos user but every time new customer id is created 
+    	// but i'll leave it as any user can take over phone number from previous user but every time new customer id is created 
     	//make new customer and get its id
     	//response.sendError(HttpServletResponse.SC_CONFLICT, "User already exists");
     	//long customerId = 0 ;
@@ -114,7 +115,7 @@ public class UserService {
             //USING PHONE NUMBER AS A USERNAME.
             newUser.setUserName(userDTO.getPhoneNumber());
             newUser.setCustomerName(userDTO.getUserName());
-            
+            System.out.println("registerNewUser > new user created.");
             return userDao.save(newUser);
     	}else
     	throw new  Exception();

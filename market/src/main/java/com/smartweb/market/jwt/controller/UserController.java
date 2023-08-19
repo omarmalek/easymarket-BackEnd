@@ -2,6 +2,9 @@ package com.smartweb.market.jwt.controller;
 
 import com.smartweb.market.jwt.entity.User;
 import com.smartweb.market.jwt.service.UserService;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
+	
 
 @RestController
 public class UserController {
@@ -18,10 +21,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostConstruct
-//    public void initRoleAndUser() {
-//        userService.initRoleAndUser();
-//    }
+    @PostConstruct
+    public void initRoleAndUser() {
+        userService.initRoleAndUser();
+    }
 //
 //    @PostMapping({"/registerNewUser"})
 //    public User registerNewUser(@RequestBody User user) {

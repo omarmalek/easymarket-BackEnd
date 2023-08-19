@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartweb.market.model.Ordertobedeleted;
 import com.smartweb.market.model.Product;
+import com.smartweb.market.repository.CenterRepository;
+import com.smartweb.market.model.Center;
 import com.smartweb.market.service.OrderService;
 import com.smartweb.market.service.ProductService;
 
@@ -21,25 +23,24 @@ import com.smartweb.market.service.ProductService;
 
 public class MainController {
 
-	
-
-
 	@Autowired
 	private ProductService productService;
 	
 	@Autowired
 	private OrderService orderService;	
 	
-
-	//i well stop this temporary for debugging purposes.
+	@Autowired
+	private CenterRepository ceneterRepository;
+	
+	@GetMapping ("centers-list")
+	public List<Center> getCentersList(){
+		return ceneterRepository.findAll();
+	}
+	//i wellstop this temporary for debugging purposes.
 	 //@GetMapping("/error")
 	public String replayWithError() { return
 	  "Somthing gos wrong! please check your URL path!  Admin -omar ma'eleq-"; }
 	 
-	
-	
-	
-	
 	// ============================= not for use
 	
 	@GetMapping("/products")

@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		try {
 			if(multiPartFile.length > 0) {
-				Set<ImageModel>	images = fileToImages(multiPartFile);
+				Set<ImageModel>	images = filepartToImages(multiPartFile);
 				product.setProductImages(images);
 			}
 			
@@ -116,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 	
-	public Set<ImageModel> fileToImages (MultipartFile[] multiPartfile) throws IOException{
+	public Set<ImageModel> filepartToImages (MultipartFile[] multiPartfile) throws IOException{
 		Set<ImageModel> myset = new HashSet<>();
 		for(MultipartFile file : multiPartfile) {
 			ImageModel imageModel = new ImageModel(file.getOriginalFilename(),

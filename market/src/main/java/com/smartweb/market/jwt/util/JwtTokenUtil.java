@@ -1,26 +1,27 @@
 package com.smartweb.market.jwt.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
-public class JwtUtil {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
-	//@Value("${app.secret}")
-    private static final String SECRET_KEY = "learn_programming_yourself";
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+@Component
+public class JwtTokenUtil {
+
+	@Value("${jwt.secret}")
+    private String SECRET_KEY ;
 
     private static final int TOKEN_VALIDITY = 3600 * 24; // 1hour = 60 * 60 = 3600 
 
+  //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -30,6 +31,7 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
+  //for retrieveing any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
         		.setSigningKey(SECRET_KEY)
@@ -41,24 +43,26 @@ public class JwtUtil {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-    //	TODO : Do nothing at all.
+    
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
+  //retrieve expiration date from jwt token
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
     
     //Generate Token
     public String generateToken(UserDetails userDetails) {
+    	System.out.println("generateToken > passed.");
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 3)) //3 days
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 10)) //10 days
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }

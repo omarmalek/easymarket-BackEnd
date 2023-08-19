@@ -6,7 +6,7 @@ import com.smartweb.market.jwt.entity.JwtRequest;
 import com.smartweb.market.jwt.entity.JwtResponse;
 import com.smartweb.market.jwt.entity.Role;
 import com.smartweb.market.jwt.entity.User;
-import com.smartweb.market.jwt.util.JwtUtil;
+import com.smartweb.market.jwt.util.JwtTokenUtil;
 import com.smartweb.market.model.UserDTO;
 import com.smartweb.market.repository.CustomerRepository;
 
@@ -26,10 +26,10 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class JwtService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtTokenUtil jwtUtil;
 
     @Autowired
     private UserDao userDao;
@@ -41,15 +41,23 @@ public class JwtService implements UserDetailsService {
     CustomerRepository customerReopsitory;
 
     public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
+    	
+    	//Extract username and password from request.
         String userName = jwtRequest.getUserName();
         String userPassword = jwtRequest.getUserPassword();
-        authenticate(userName, userPassword);//This is a "Checkpoint". if this procedure catch an error everything stops right here.
+        
+        //validate user
+        authenticate(userName, userPassword);//This method returns 'void' anyway, it works as a "Checkpoint". if this procedure catch an error everything stops right here.
 
+        //fetching user details from the database using the username.
         UserDetails userDetails = loadUserByUsername(userName);
+        
+        //Generate Token
         String newGeneratedToken = jwtUtil.generateToken(userDetails);
 
+        //fetching customer info from the database using the username. 
         User user = userDao.findById(userName).get();
-        Customer  customer = customerReopsitory.getById(user.getCustomerId());
+        Customer  customer = customerReopsitory.findById(user.getCustomerId()).get();
         		
        
         return new JwtResponse(customer.getId(), user.getCustomerName(),  customer.getPhoneNumber(),  customer.getAddress(), newGeneratedToken);

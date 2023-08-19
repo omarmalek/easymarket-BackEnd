@@ -4,12 +4,14 @@ import com.smartweb.market.jwt.entity.JwtRequest;
 import com.smartweb.market.jwt.entity.JwtResponse;
 import com.smartweb.market.jwt.entity.Role;
 import com.smartweb.market.jwt.entity.User;
-import com.smartweb.market.jwt.service.JwtService;
+import com.smartweb.market.jwt.service.JwtUserDetailsService;
 import com.smartweb.market.jwt.service.RoleService;
 import com.smartweb.market.jwt.service.UserService;
 import com.smartweb.market.model.UserDTO;
 
-import javax.annotation.PostConstruct;
+
+
+//import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class JwtController {
+public class JwtAuthenticationController {
 
     @Autowired
-    private JwtService jwtService;
+    private JwtUserDetailsService jwtUserDetailsService;
     
     @Autowired
     private UserService userService;
@@ -32,18 +34,18 @@ public class JwtController {
     @Autowired
     private RoleService roleService;
     
-    @PostConstruct
+//    @PostConstruct
     public void initRoleAndUser() {
         userService.initRoleAndUser();
     }
 
     @PostMapping({"/authenticate"})//for user have (username and password) & need authentication.
     public JwtResponse createJwtToken(@RequestBody JwtRequest jwtRequest) throws Exception {
-        return jwtService.createJwtToken(jwtRequest);
+        return jwtUserDetailsService.createJwtToken(jwtRequest);
     }
     @PostMapping({"/authenticateAdmins"})//for user have (username and password) & need authentication.
     public JwtResponse createJwtAdminToken(@RequestBody JwtRequest jwtRequest) throws Exception {
-        return jwtService.createJwtAdminToken(jwtRequest);
+        return jwtUserDetailsService.createJwtAdminToken(jwtRequest);
     }
     
     @GetMapping ({"/checkUserAuthentication"})
