@@ -66,7 +66,7 @@ public class ProductController {
 		return new ResponseEntity<String>("product deleted successfully", HttpStatus.OK);
 	}
 
-	// save product //is this used??????
+	// save product //used for fake products entry
 	@PostMapping("/product")
 	@PreAuthorize("hasRole('Admin')")
 	public ResponseEntity<Product> saveProduct(@RequestBody Product product) {

@@ -115,6 +115,7 @@ public class OrderServiceImpl implements OrderService {
 	public List<OrderDTO> getControlOrders(int pageIndex, int pageSize) {
 		PageRequest page = PageRequest.of(pageIndex, pageSize,Sort.by("id").descending());
 		List<OrderDAO> list = orderRepository.findAll(page).getContent();
+		//System.out.println("getControlOrders method:>>>> " + list );
 		return convertToDTO(list);
 
 	}
@@ -250,13 +251,11 @@ public class OrderServiceImpl implements OrderService {
 			
 			listofOrderDTO.add(orderDTO);
 		}
-
 		return listofOrderDTO;
-
 	}
 
 	public List<OrderDTO> convertToDTO(List<OrderDAO> source) {
-		List<OrderDTO> list = new ArrayList<>();
+		List<OrderDTO> DTOList = new ArrayList<>();
 		for (OrderDAO databaseOrder : source) {
 			OrderDTO orderDTO = new OrderDTO();
 
@@ -283,10 +282,10 @@ public class OrderServiceImpl implements OrderService {
 			orderDTO.setCustomerPhone(customer.getPhoneNumber());
 			orderDTO.setCustomerAddress(customer.getAddress());
 
-			List<OrderRecordDAO> listOfDAORecords = orderRecordRepository.findByOrderId(databaseOrder.getId());
-			List<OrderRecordDTO> listOfDTORecords = new ArrayList<>();
+			List<OrderRecordDAO> listOfOrderRecordDAO = orderRecordRepository.findByOrderId(databaseOrder.getId());
+			List<OrderRecordDTO> listOfOrderRecordDTO = new ArrayList<>();
 
-			for (OrderRecordDAO databaseRecord : listOfDAORecords) {
+			for (OrderRecordDAO databaseRecord : listOfOrderRecordDAO) {
 				OrderRecordDTO recordDTO = new OrderRecordDTO();
 
 				recordDTO.setId(databaseRecord.getId());
@@ -300,13 +299,13 @@ public class OrderServiceImpl implements OrderService {
 					recordDTO.setPackType(product.getPackType());
 					recordDTO.setUnitPrice(product.getUnitPrice());
 				}
-				listOfDTORecords.add(recordDTO);
+				listOfOrderRecordDTO.add(recordDTO);
 			}
-			
-			orderDTO.setOrderCart(listOfDTORecords);
-			list.add(orderDTO);
+			orderDTO.setOrderCart(listOfOrderRecordDTO);
+			DTOList.add(orderDTO);
 		}
-		return list;
+		//System.out.println("DTOList" + DTOList);
+		return DTOList;
 	}
 
 	@Override
